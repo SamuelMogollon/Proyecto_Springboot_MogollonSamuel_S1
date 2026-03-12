@@ -2,6 +2,7 @@ package com.logitrack.logitrack.service.impl;
 
 import com.logitrack.logitrack.dto.request.UsuarioRequestDTO;
 import com.logitrack.logitrack.dto.response.UsuarioResponseDTO;
+import com.logitrack.logitrack.exception.BusinessRuleException;
 import com.logitrack.logitrack.mapper.UsuarioMapper;
 import com.logitrack.logitrack.model.Usuario;
 import com.logitrack.logitrack.repository.UsuarioRepository;
@@ -27,7 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioResponseDTO actualizarUsuario(UsuarioRequestDTO dto, Long id) {
         Usuario u = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el usuario"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el usuario con id: " + id));
         usuarioMapper.actualizarEntidadDesdeDTO(u, dto);
         Usuario actualizado = usuarioRepository.save(u);
         return usuarioMapper.entidadADTO(actualizado);
@@ -36,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void eliminarUsuario(Long id) {
         usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el usuario"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el usuario con id: " + id));
         usuarioRepository.deleteById(id);
     }
 
@@ -51,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioResponseDTO buscarPorId(Long id) {
         Usuario u = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el usuario"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el usuario con id: " + id));
         return usuarioMapper.entidadADTO(u);
     }
 }

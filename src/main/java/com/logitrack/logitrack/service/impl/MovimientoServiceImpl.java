@@ -3,6 +3,7 @@ package com.logitrack.logitrack.service.impl;
 import com.logitrack.logitrack.dto.request.MovimientoRequestDTO;
 import com.logitrack.logitrack.dto.response.DetalleMovimientoResponseDTO;
 import com.logitrack.logitrack.dto.response.MovimientoResponseDTO;
+import com.logitrack.logitrack.exception.BusinessRuleException;
 import com.logitrack.logitrack.mapper.DetalleMovimientoMapper;
 import com.logitrack.logitrack.mapper.MovimientoMapper;
 import com.logitrack.logitrack.model.*;
@@ -33,16 +34,16 @@ public class MovimientoServiceImpl implements MovimientoService {
     public MovimientoResponseDTO guardarMovimiento(MovimientoRequestDTO dto) {
 
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
-                .orElseThrow(() -> new RuntimeException("No existe el usuario"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el usuario con id: " + dto.idUsuario()));
 
         Bodega bodegaOrigen = dto.idBodegaOrigen() != null
                 ? bodegaRepository.findById(dto.idBodegaOrigen())
-                .orElseThrow(() -> new RuntimeException("No existe la bodega origen"))
+                .orElseThrow(() -> new BusinessRuleException("No existe la bodega origen con id: " + dto.idBodegaOrigen()))
                 : null;
 
         Bodega bodegaDestino = dto.idBodegaDestino() != null
                 ? bodegaRepository.findById(dto.idBodegaDestino())
-                .orElseThrow(() -> new RuntimeException("No existe la bodega destino"))
+                .orElseThrow(() -> new BusinessRuleException("No existe la bodega destino con id: " + dto.idBodegaDestino()))
                 : null;
 
         Movimiento movimiento = movimientoMapper.DTOAEntidad(dto, usuario, bodegaOrigen, bodegaDestino);
@@ -51,7 +52,7 @@ public class MovimientoServiceImpl implements MovimientoService {
         List<DetalleMovimientoResponseDTO> detalles = dto.detalles().stream().map(detalleDTO -> {
 
             Producto producto = productoRepository.findById(detalleDTO.idProducto())
-                    .orElseThrow(() -> new RuntimeException("No existe el producto"));
+                    .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + detalleDTO.idProducto()));
 
             // Actualizar stock según tipo de movimiento
             actualizarStock(dto.tipo(), bodegaOrigen, bodegaDestino, producto, detalleDTO.cantidad());
@@ -107,10 +108,10 @@ public class MovimientoServiceImpl implements MovimientoService {
     private void reducirStock(Bodega bodega, Producto producto, Integer cantidad) {
         BodegaProducto bp = bodegaProductoRepository
                 .findByBodegaIdAndProductoId(bodega.getId(), producto.getId())
-                .orElseThrow(() -> new RuntimeException("No hay stock de este producto en la bodega"));
+                .orElseThrow(() -> new BusinessRuleException("Stock insuficiente para el producto con id: " + producto.getId()));
 
         if (bp.getStock() < cantidad) {
-            throw new RuntimeException("Stock insuficiente");
+            throw new BusinessRuleException("No hay stock del producto con id: " + producto.getId() + " en la bodega con id: " + bodega.getId());
         }
 
         bp.setStock(bp.getStock() - cantidad);
@@ -131,7 +132,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     public MovimientoResponseDTO buscarPorId(Long id) {
         Movimiento m = movimientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el movimiento"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el movimiento con id: " + id));
         List<DetalleMovimientoResponseDTO> detalles = m.getDetalles()
                 .stream()
                 .map(detalleMovimientoMapper::entidadADTO)

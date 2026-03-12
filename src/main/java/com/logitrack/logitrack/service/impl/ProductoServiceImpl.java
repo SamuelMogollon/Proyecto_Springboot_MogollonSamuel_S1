@@ -2,6 +2,7 @@ package com.logitrack.logitrack.service.impl;
 
 import com.logitrack.logitrack.dto.request.ProductoRequestDTO;
 import com.logitrack.logitrack.dto.response.ProductoResponseDTO;
+import com.logitrack.logitrack.exception.BusinessRuleException;
 import com.logitrack.logitrack.mapper.ProductoMapper;
 import com.logitrack.logitrack.model.Producto;
 import com.logitrack.logitrack.repository.ProductoRepository;
@@ -28,7 +29,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoResponseDTO actualizarProducto(ProductoRequestDTO dto, Long id) {
         Producto p = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el producto"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + id));
         productoMapper.actualizarEntidadDesdeDTO(p, dto);
         Producto actualizado = productoRepository.save(p);
         return productoMapper.entidadADTO(actualizado);
@@ -37,7 +38,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public void eliminarProducto(Long id) {
         productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el producto"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + id));
         productoRepository.deleteById(id);
     }
 
@@ -52,7 +53,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoResponseDTO buscarPorId(Long id) {
         Producto p = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el producto"));
+                .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + id));
         return productoMapper.entidadADTO(p);
     }
 }
