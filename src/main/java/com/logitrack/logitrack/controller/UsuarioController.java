@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class UsuarioController {
                 @ApiResponse(responseCode = "403", description = "No autorizado")
         })
         @PostMapping
-        public ResponseEntity<UsuarioResponseDTO> guardar(@RequestBody UsuarioRequestDTO dto) {
+        public ResponseEntity<UsuarioResponseDTO> guardar(@Valid @RequestBody UsuarioRequestDTO dto) {
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioServiceImpl.guardarUsuario(dto));
         }
 
@@ -71,7 +72,7 @@ public class UsuarioController {
                 @ApiResponse(responseCode = "403", description = "No autorizado")
         })
         @PutMapping("/{id}")
-        public ResponseEntity<UsuarioResponseDTO> actualizar(@RequestBody UsuarioRequestDTO dto,
+        public ResponseEntity<UsuarioResponseDTO> actualizar(@Valid@RequestBody UsuarioRequestDTO dto,
                                                              @PathVariable Long id) {
             return ResponseEntity.ok(usuarioServiceImpl.actualizarUsuario(dto, id));
         }

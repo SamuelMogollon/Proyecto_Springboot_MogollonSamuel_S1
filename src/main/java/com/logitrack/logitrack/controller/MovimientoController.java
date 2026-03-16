@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class MovimientoController {
             @ApiResponse(responseCode = "403", description = "No autorizado")
     })
     @PostMapping
-    public ResponseEntity<MovimientoResponseDTO> guardar(@RequestBody MovimientoRequestDTO dto) {
+    public ResponseEntity<MovimientoResponseDTO> guardar(@Valid @RequestBody MovimientoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(movimientoServiceImpl.guardarMovimiento(dto));
     }
 

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class BodegaController {
             @ApiResponse(responseCode = "403", description = "No autorizado")
     })
     @PostMapping
-    public ResponseEntity<BodegaResponseDTO> guardar(@RequestBody BodegaRequestDTO dto) {
+    public ResponseEntity<BodegaResponseDTO> guardar(@Valid @RequestBody BodegaRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bodegaServiceImpl.guardarBodega(dto));
     }
 
@@ -73,7 +74,7 @@ public class BodegaController {
             @ApiResponse(responseCode = "403", description = "No autorizado")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<BodegaResponseDTO> actualizar(@RequestBody BodegaRequestDTO dto,
+    public ResponseEntity<BodegaResponseDTO> actualizar(@Valid @RequestBody BodegaRequestDTO dto,
                                                         @Parameter(description = "ID de la bodega", example = "1")
                                                         @PathVariable Long id) {
         return ResponseEntity.ok(bodegaServiceImpl.actualizarBodega(dto, id));
