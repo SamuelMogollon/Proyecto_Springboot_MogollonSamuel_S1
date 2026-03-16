@@ -10,4 +10,6 @@ public interface ProductoService {
     void eliminarProducto(Long id);
     List<ProductoResponseDTO> listarTodos();
     ProductoResponseDTO buscarPorId(Long id);
+    List<ProductoResponseDTO> listarProductosConStockBajo();
+
 }

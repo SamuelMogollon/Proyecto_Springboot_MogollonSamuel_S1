@@ -92,4 +92,14 @@ public class ProductoController {
         productoServiceImpl.eliminarProducto(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Operation(summary = "Productos con stock bajo", description = "Retorna productos con stock total menor a 10 unidades")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente"),
+            @ApiResponse(responseCode = "403", description = "No autorizado")
+    })
+    @GetMapping("/stock-bajo")
+    public ResponseEntity<List<ProductoResponseDTO>> listarStockBajo() {
+        return ResponseEntity.ok(productoServiceImpl.listarProductosConStockBajo());
+    }
 }

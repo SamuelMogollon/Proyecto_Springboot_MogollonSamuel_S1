@@ -15,12 +15,13 @@ public class ProductoMapper {
         return p;
     }
 
-    public ProductoResponseDTO entidadADTO(Producto p) {
+    public ProductoResponseDTO entidadADTO(Producto p, Integer stockTotal) {
         return new ProductoResponseDTO(
                 p.getId(),
                 p.getNombre(),
                 p.getCategoria(),
-                p.getPrecio()
+                p.getPrecio(),
+                stockTotal
         );
     }
 

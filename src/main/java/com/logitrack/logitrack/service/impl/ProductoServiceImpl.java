@@ -5,6 +5,7 @@ import com.logitrack.logitrack.dto.response.ProductoResponseDTO;
 import com.logitrack.logitrack.exception.BusinessRuleException;
 import com.logitrack.logitrack.mapper.ProductoMapper;
 import com.logitrack.logitrack.model.Producto;
+import com.logitrack.logitrack.repository.BodegaProductoRepository;
 import com.logitrack.logitrack.repository.ProductoRepository;
 import com.logitrack.logitrack.service.ProductoService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,14 @@ import java.util.List;
 public class ProductoServiceImpl implements ProductoService {
     private final ProductoRepository productoRepository;
     private final ProductoMapper productoMapper;
+    private final BodegaProductoRepository bodegaProductoRepository;
 
 
     @Override
     public ProductoResponseDTO guardarProducto(ProductoRequestDTO dto) {
         Producto p = ProductoMapper.DTOAEntidad(dto);
         Producto guardado = productoRepository.save(p);
-        return productoMapper.entidadADTO(guardado);
+        return productoMapper.entidadADTO(guardado, calcularStockTotal(guardado.getId()));
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + id));
         productoMapper.actualizarEntidadDesdeDTO(p, dto);
         Producto actualizado = productoRepository.save(p);
-        return productoMapper.entidadADTO(actualizado);
+        return productoMapper.entidadADTO(actualizado, calcularStockTotal(actualizado.getId()));
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ProductoServiceImpl implements ProductoService {
     public List<ProductoResponseDTO> listarTodos() {
         return productoRepository.findAll()
                 .stream()
-                .map(productoMapper::entidadADTO)
+                .map(p -> productoMapper.entidadADTO(p, calcularStockTotal(p.getId())))
                 .toList();
     }
 
@@ -54,6 +56,18 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoResponseDTO buscarPorId(Long id) {
         Producto p = productoRepository.findById(id)
                 .orElseThrow(() -> new BusinessRuleException("No existe el producto con id: " + id));
-        return productoMapper.entidadADTO(p);
+        return productoMapper.entidadADTO(p, calcularStockTotal(p.getId()));
+    }
+
+    @Override
+    public List<ProductoResponseDTO> listarProductosConStockBajo() {
+        return bodegaProductoRepository.findProductosConStockBajo(10)
+                .stream()
+                .map(p -> productoMapper.entidadADTO(p, calcularStockTotal(p.getId())))
+                .toList();
+    }
+
+    private Integer calcularStockTotal(Long productoId) {
+        return bodegaProductoRepository.sumStockByProductoId(productoId);
     }
 }

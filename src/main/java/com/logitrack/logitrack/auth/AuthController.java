@@ -2,6 +2,7 @@ package com.logitrack.logitrack.auth;
 
 
 import com.logitrack.logitrack.config.JwtService;
+import com.logitrack.logitrack.exception.BusinessRuleException;
 import com.logitrack.logitrack.model.Usuario;
 import com.logitrack.logitrack.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,10 +42,10 @@ public class AuthController {
     public Map<String, String> login(@RequestBody LoginRequest request) {
 
         Usuario usuario = usuarioRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
+                .orElseThrow(() -> new BusinessRuleException("Credenciales inválidas"));
 
         if (!passwordEncoder.matches(request.password(), usuario.getPassword())) {
-            throw new RuntimeException("Credenciales inválidas");
+            throw new BusinessRuleException("Credenciales inválidas");
         }
 
         String token = jwtService.generateToken(usuario.getEmail(), usuario.getRol().name());
