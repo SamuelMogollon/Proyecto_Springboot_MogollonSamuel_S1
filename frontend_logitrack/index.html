@@ -54,7 +54,7 @@
         <!-- Panel derecho — blanco con el formulario -->
         <div class="derecha">
             <!-- Formulario de login -->
-            <div class="form">
+            <div class="form" id="formLogin">
 
                 <!-- Encabezado del formulario -->
                 <div class="form-head">
@@ -83,6 +83,12 @@
                     <div class="btn-icon" id="btnIcon">→</div>
                 </button>
 
+                <!-- Link para ir al registro -->
+                <p class="switch-link">
+                    ¿No tienes cuenta?
+                    <span onclick="mostrarRegistro()">Regístrate</span>
+                </p>
+
                 <!-- Mensaje de error o éxito -->
                 <p class="msg" id="msg"></p>
 
@@ -93,10 +99,57 @@
                 </div>
 
             </div>
+            <!-- Formulario de registro — oculto por defecto -->
+            <div class="form" id="formRegistro" style="display:none">
+                <div class="form-head">
+                    <p class="form-eyebrow">Crear cuenta</p>
+                    <h2 class="form-title">Registrarse.</h2>
+                </div>
+
+                <div class="fields-wrap">
+                    <div class="field">
+                        <label>Nombre completo</label>
+                        <input type="text" id="regNombre" placeholder="Samuel Mogollón" />
+                        <div class="bar"></div>
+                    </div>
+                    <div class="field">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="regEmail" placeholder="usuario@logitrack.com" />
+                        <div class="bar"></div>
+                    </div>
+                    <div class="field">
+                        <label>Contraseña</label>
+                        <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" />
+                        <div class="bar"></div>
+                    </div>
+                    <div class="field">
+                        <label>Rol</label>
+                        <select id="regRol">
+                            <option value="ADMIN">Administrador</option>
+                            <option value="EMPLEADO">Empleado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn" id="btnRegistro" onclick="doRegister()">
+                    <span id="btnRegTxt">Crear cuenta</span>
+                    <div class="btn-icon" id="btnRegIcon">→</div>
+                </button>
+
+                <p class="switch-link">
+                    ¿Ya tienes cuenta?
+                    <span onclick="mostrarLogin()">Inicia sesión</span>
+                </p>
+
+                <p class="msg" id="msgReg"></p>
+
+                <div class="form-footer">
+                    <span class="footer-l">LogiTrack S.A. · 2026</span>
+                    <div class="footer-r"></div>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- Funciones globales reutilizables -->
-    <script src="js/api.js"></script>
 
     <!-- Lógica específica del login -->
     <script src="js/login.js"></script>

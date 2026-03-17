@@ -62,3 +62,67 @@ async function doLogin() {
 document.addEventListener('keydown', e => {
     if (e.key === 'Enter') doLogin();
 });
+
+// Mostrar formulario de registro
+function mostrarRegistro() {
+    document.getElementById('formLogin').style.display = 'none';
+    document.getElementById('formRegistro').style.display = 'block';
+    document.getElementById('msgReg').className = 'msg';
+}
+
+// Mostrar formulario de login
+function mostrarLogin() {
+    document.getElementById('formRegistro').style.display = 'none';
+    document.getElementById('formLogin').style.display = 'block';
+    document.getElementById('msg').className = 'msg';
+}
+
+// Función de registro
+async function doRegister() {
+    const nombre = document.getElementById('regNombre').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+    const rol = document.getElementById('regRol').value;
+    const btn = document.getElementById('btnRegistro');
+    const txt = document.getElementById('btnRegTxt');
+    const icon = document.getElementById('btnRegIcon');
+    const msg = document.getElementById('msgReg');
+
+    msg.className = 'msg';
+    msg.textContent = '';
+
+    if (!nombre || !email || !password) {
+        msg.textContent = 'Todos los campos son obligatorios.';
+        msg.className = 'msg err show';
+        return;
+    }
+
+    btn.disabled = true;
+    txt.textContent = 'Creando cuenta...';
+    icon.innerHTML = '<div class="spinner"></div>';
+
+    try {
+        const r = await fetch('http://localhost:8080/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, email, password, rol })
+        });
+
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.mensaje || 'Error al registrar');
+
+        msg.textContent = '✓ Cuenta creada — inicia sesión';
+        msg.className = 'msg ok show';
+
+        // Redirigir al login después de 1.5 segundos
+        setTimeout(() => mostrarLogin(), 1500);
+
+    } catch (e) {
+        msg.textContent = e.message;
+        msg.className = 'msg err show';
+    } finally {
+        btn.disabled = false;
+        txt.textContent = 'Crear cuenta';
+        icon.textContent = '→';
+    }
+}
