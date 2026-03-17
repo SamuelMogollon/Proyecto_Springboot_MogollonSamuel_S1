@@ -1,0 +1,406 @@
+:root {
+    --red: #c0392b;
+    --red-dark: #96281b;
+    --black: #0c0c0c;
+    --white: #ffffff;
+    --off: #fafaf8;
+    --border: #e5e4e0;
+    --muted: #999994;
+    --err: #b71c1c;
+    --ok: #1b5e20;
+}
+
+/* Layout principal — dos columnas, ocupa toda la pantalla */
+.page {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    height: 100vh;
+}
+
+/* Panel izquierdo — fondo rojo */
+.izquierda {
+    background: var(--red);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 56px 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Panel derecho — fondo blanco */
+.derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 72px;
+    background: var(--white);
+    position: relative;
+}
+
+/* Patrón de puntos decorativo sobre el panel rojo */
+.left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+
+/* Círculo decorativo en la esquina inferior derecha */
+.left::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    bottom: -300px;
+    right: -200px;
+    pointer-events: none;
+}
+
+/* Parte superior del panel izquierdo */
+.left-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-sq {
+    width: 36px;
+    height: 36px;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-sq span {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--red);
+    font-style: italic;
+}
+
+.logo-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+}
+
+/* Badge de versión */
+.tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+}
+
+/* Parte central */
+.left-mid {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-sup {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Línea decorativa antes del eyebrow */
+.hero-sup::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.hero-h {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(50px, 5vw, 76px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 28px;
+}
+
+/* Texto en cursiva dentro del título */
+.hero-h em {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.hero-p {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 340px;
+    font-weight: 300;
+}
+
+/* Estadísticas en la parte inferior */
+.left-bot {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 32px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 24px;
+}
+
+.stat:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    margin-right: 24px;
+}
+
+.stat-v {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 30px;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.stat-l {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* Línea decorativa en el borde izquierdo del panel derecho */
+.right::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+}
+
+/* Formulario centrado con ancho máximo */
+.form {
+    width: 100%;
+    max-width: 360px;
+}
+
+/* Encabezado del formulario */
+.form-head {
+    margin-bottom: 48px;
+}
+
+.form-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+/* Título principal del formulario */
+.form-title {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--black);
+}
+
+/* "sesión." en cursiva y rojo */
+.form-title em {
+    font-style: italic;
+    color: var(--red);
+}
+
+/* Campos del formulario */
+.field {
+    margin-bottom: 26px;
+}
+
+.field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.field input {
+    width: 100%;
+    background: var(--off);
+    border: 1.5px solid var(--border);
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+/* Borde rojo al hacer focus en el input */
+.field input:focus {
+    border-color: var(--red);
+    background: var(--white);
+}
+
+.field input::placeholder {
+    color: var(--muted);
+    font-weight: 300;
+}
+
+/* Botón de login */
+.btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 16px 20px;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.12s;
+}
+
+.btn:hover { background: var(--red-dark); }
+.btn:active { transform: scale(0.99); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Círculo con flecha que se anima al hover */
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: transform 0.25s;
+}
+
+.btn:hover .btn-icon { transform: translateX(4px); }
+
+/* Mensaje de error o éxito */
+.msg {
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    min-height: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.msg.show { opacity: 1; }
+.msg.err { color: var(--err); }
+.msg.ok { color: var(--ok); }
+
+/* Pie del formulario */
+.form-footer {
+    margin-top: 44px;
+    padding-top: 22px;
+    border-top: 1.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-l {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--black);
+    letter-spacing: 0.05em;
+}
+
+/* Punto rojo decorativo */
+.footer-r {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+}
+
+/* Tablet landscape */
+@media (max-width: 1024px) {
+    .left { padding: 40px 40px; }
+    .right { padding: 40px 48px; }
+    .hero-h { font-size: clamp(40px, 5vw, 60px); }
+}
+
+/* Tablet portrait */
+@media (max-width: 820px) {
+    html, body { overflow: auto; }
+    .page {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 100vh;
+    }
+    .left { padding: 36px 32px; min-height: auto; }
+    .left::after { display: none; }
+    .hero-h { font-size: clamp(36px, 8vw, 52px); }
+    .left-bot { padding-top: 28px; }
+    .stat-v { font-size: 24px; }
+    .right { padding: 48px 32px; }
+    .right::before { display: none; }
+    .form-head { margin-bottom: 36px; }
+    .form-title { font-size: 40px; }
+    .form-footer { margin-top: 36px; }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .left { padding: 28px 24px; }
+    .hero-h { font-size: clamp(32px, 9vw, 44px); }
+    .hero-p { font-size: 13.5px; }
+    .stat-v { font-size: 20px; }
+    .right { padding: 36px 24px; }
+    .form-title { font-size: 34px; }
+    .btn { padding: 14px 16px; font-size: 12px; }
+}
