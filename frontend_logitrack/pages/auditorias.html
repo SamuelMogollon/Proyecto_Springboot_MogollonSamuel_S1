@@ -3,18 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogiTrack — Bodegas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LogiTrack — Auditorías</title>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet" />
 
     <link rel="stylesheet" href="../styles/dashboard.css" />
-    <link rel="stylesheet" href="../styles/bodegas.css" />
+    <link rel="stylesheet" href="../styles/auditorias.css" />
 </head>
 
 <body>
+
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
     <div class="app">
@@ -38,16 +39,13 @@
             </a>
 
             <div class="sidebar-section">Gestión</div>
-
-            <!-- Bodegas activo -->
-            <a class="nav-item active" href="bodegas.html">
+            <a class="nav-item" href="bodegas.html">
                 <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M1 6L8 1l7 5v9H1V6z" />
                     <rect x="5" y="9" width="3" height="6" />
                 </svg>
                 Bodegas
             </a>
-
             <a class="nav-item" href="productos.html">
                 <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="1" y="4" width="14" height="10" />
@@ -70,7 +68,9 @@
             </a>
 
             <div class="sidebar-section">Reportes</div>
-            <a class="nav-item" href="auditorias.html">
+
+            <!-- Auditorías activo -->
+            <a class="nav-item active" href="auditorias.html">
                 <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M3 1h10v14H3z" />
                     <path d="M5 5h6M5 8h6M5 11h4" />
@@ -100,21 +100,30 @@
                     <span></span>
                 </button>
                 <div class="topbar-left">
-                    <h1>Bodegas</h1>
-                    <p>Gestión de bodegas del sistema</p>
+                    <h1>Auditorías</h1>
+                    <p>Registro de cambios del sistema</p>
                 </div>
             </div>
             <div class="topbar-right">
-                <button class="btn-primary" onclick="abrirModal()">+ Nueva bodega</button>
+                <!-- Filtros -->
+                <select class="select-filtro" id="filtroTipo" onchange="filtrarPorTipo()">
+                    <option value="">Todos los tipos</option>
+                    <option value="INSERT">INSERT</option>
+                    <option value="UPDATE">UPDATE</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <select class="select-filtro" id="filtroUsuario" onchange="filtrarPorUsuario()">
+                    <option value="">Todos los usuarios</option>
+                </select>
             </div>
         </header>
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main">
 
-            <!-- Panel tabla de bodegas -->
+            <!-- Panel tabla de auditorías -->
             <div class="panel">
                 <div class="panel-head">
-                    <h2 class="panel-title">Bodegas registradas</h2>
+                    <h2 class="panel-title" id="panelTitle">Registro de auditorías</h2>
                     <span class="panel-count" id="totalCount">Cargando...</span>
                 </div>
                 <div class="table-wrap">
@@ -122,87 +131,27 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nombre</th>
-                                <th>Ubicación</th>
-                                <th>Capacidad</th>
-                                <th>Encargado</th>
-                                <th>Acciones</th>
+                                <th>Tipo operación</th>
+                                <th>Entidad afectada</th>
+                                <th>Usuario</th>
+                                <th>Valores anteriores</th>
+                                <th>Valores nuevos</th>
+                                <th>Fecha y hora</th>
                             </tr>
                         </thead>
-                        <tbody id="tablaBodegas">
+                        <tbody id="tablaAuditorias">
                             <tr>
-                                <td colspan="6" class="loading">Cargando...</td>
+                                <td colspan="7" class="loading">Cargando...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </main>
-        <!-- Modal crear/editar bodega -->
-        <div class="modal-overlay" id="modalOverlay" onclick="cerrarModal()"></div>
-
-        <div class="modal" id="modal">
-            <div class="modal-head">
-                <h3 class="modal-title" id="modalTitle">Nueva bodega</h3>
-                <button class="modal-close" onclick="cerrarModal()">✕</button>
-            </div>
-
-            <div class="modal-body">
-
-                <div class="form-field">
-                    <label>Nombre</label>
-                    <input type="text" id="inputNombre" placeholder="Ej: Bodega Bogotá" />
-                </div>
-
-                <div class="form-field">
-                    <label>Ubicación</label>
-                    <input type="text" id="inputUbicacion" placeholder="Ej: Bogotá, Colombia" />
-                </div>
-
-                <div class="form-field">
-                    <label>Capacidad</label>
-                    <input type="number" id="inputCapacidad" placeholder="Ej: 1000" min="1" />
-                </div>
-
-                <div class="form-field">
-                    <label>Encargado</label>
-                    <select id="inputEncargado">
-                        <option value="">Seleccionar encargado...</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="modal-foot">
-                <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-                <button class="btn-save" id="btnGuardar" onclick="guardarBodega()">Guardar</button>
-            </div>
-
-            <p class="modal-msg" id="modalMsg"></p>
-        </div>
-
-        <!-- Modal de confirmación eliminar -->
-        <div class="modal-overlay" id="modalConfirmOverlay"></div>
-
-        <div class="modal" id="modalConfirm">
-            <div class="modal-head">
-                <h3 class="modal-title">Confirmar eliminación</h3>
-                <button class="modal-close" onclick="cerrarConfirm()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:14px;color:var(--text-2);line-height:1.6">
-                    ¿Estás seguro de eliminar la bodega <strong id="confirmNombre"></strong>? Esta acción no se puede
-                    deshacer.
-                </p>
-            </div>
-            <div class="modal-foot">
-                <button class="btn-cancel" onclick="cerrarConfirm()">Cancelar</button>
-                <button class="btn-delete-confirm" id="btnConfirmEliminar">Eliminar</button>
-            </div>
-        </div>
     </div>
 
-    <script src="../js/bodegas.js"></script>
+    <script src="../js/auditorias.js"></script>
 </body>
 
 </html>

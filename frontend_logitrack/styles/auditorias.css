@@ -1,0 +1,61 @@
+/* Selects de filtro en el topbar */
+.select-filtro {
+    padding: 8px 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.select-filtro:focus {
+    border-color: var(--red);
+}
+
+/* Contador */
+.panel-count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+}
+
+/* Badges tipo operación */
+.badge-insert {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.badge-update {
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.badge-delete {
+    background: #fff1f2;
+    color: #9f1239;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* Valores anteriores y nuevos */
+.val-cell {
+    font-size: 11.5px;
+    color: var(--text-2);
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
