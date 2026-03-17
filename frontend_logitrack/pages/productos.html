@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiTrack — Productos</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="../styles/dashboard.css" />
+    <link rel="stylesheet" href="../styles/productos.css" />
+</head>
+
+<body>
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <div class="app">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-sq">L</div>
+                <span class="brand-name">LogiTrack</span>
+            </div>
+
+            <div class="sidebar-section">Principal</div>
+            <a class="nav-item" href="dashboard.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="1" width="6" height="6" />
+                    <rect x="9" y="1" width="6" height="6" />
+                    <rect x="1" y="9" width="6" height="6" />
+                    <rect x="9" y="9" width="6" height="6" />
+                </svg>
+                Dashboard
+            </a>
+
+            <div class="sidebar-section">Gestión</div>
+            <a class="nav-item" href="bodegas.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M1 6L8 1l7 5v9H1V6z" />
+                    <rect x="5" y="9" width="3" height="6" />
+                </svg>
+                Bodegas
+            </a>
+
+            <!-- Productos activo -->
+            <a class="nav-item active" href="productos.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="4" width="14" height="10" />
+                    <path d="M5 4V2.5a3 3 0 016 0V4" />
+                </svg>
+                Productos
+            </a>
+
+            <a class="nav-item" href="movimientos.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 8h12M10 4l4 4-4 4" />
+                </svg>
+                Movimientos
+            </a>
+            <a class="nav-item" href="usuarios.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="8" cy="5" r="3" />
+                    <path d="M1 14c0-3.314 3.134-6 7-6s7 2.686 7 6" />
+                </svg>
+                Usuarios
+            </a>
+
+            <div class="sidebar-section">Reportes</div>
+            <a class="nav-item" href="auditorias.html">
+                <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 1h10v14H3z" />
+                    <path d="M5 5h6M5 8h6M5 11h4" />
+                </svg>
+                Auditorías
+            </a>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-av" id="userAv">S</div>
+                    <div>
+                        <div class="user-name" id="userName">Usuario</div>
+                        <div class="user-role">Administrador</div>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+            </div>
+
+        </aside>
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="topbar-left-wrap">
+                <button class="menu-btn" onclick="openSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="topbar-left">
+                    <h1>Productos</h1>
+                    <p>Gestión de productos del inventario</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <!-- Filtro de stock bajo -->
+                <button class="btn-secondary" id="btnFiltro" onclick="toggleStockBajo()">Stock bajo</button>
+                <button class="btn-primary" onclick="abrirModal()">+ Nuevo producto</button>
+            </div>
+        </header>
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main">
+
+            <!-- Panel tabla de productos -->
+            <div class="panel">
+                <div class="panel-head">
+                    <h2 class="panel-title" id="panelTitle">Productos registrados</h2>
+                    <span class="panel-count" id="totalCount">Cargando...</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaProductos">
+                            <tr>
+                                <td colspan="6" class="loading">Cargando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <!-- Modal crear/editar producto -->
+        <div class="modal-overlay" id="modalOverlay" onclick="cerrarModal()"></div>
+
+        <div class="modal" id="modal">
+            <div class="modal-head">
+                <h3 class="modal-title" id="modalTitle">Nuevo producto</h3>
+                <button class="modal-close" onclick="cerrarModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-field">
+                    <label>Nombre</label>
+                    <input type="text" id="inputNombre" placeholder="Ej: Laptop Dell" />
+                </div>
+
+                <div class="form-field">
+                    <label>Categoría</label>
+                    <input type="text" id="inputCategoria" placeholder="Ej: Electrónica" />
+                </div>
+
+                <div class="form-field">
+                    <label>Precio</label>
+                    <input type="number" id="inputPrecio" placeholder="Ej: 2500000" min="0" />
+                </div>
+
+            </div>
+
+            <div class="modal-foot">
+                <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-save" id="btnGuardar" onclick="guardarProducto()">Guardar</button>
+            </div>
+
+            <p class="modal-msg" id="modalMsg"></p>
+        </div>
+
+        <!-- Modal confirmación eliminar -->
+        <div class="modal-overlay" id="modalConfirmOverlay"></div>
+
+        <div class="modal" id="modalConfirm">
+            <div class="modal-head">
+                <h3 class="modal-title">Confirmar eliminación</h3>
+                <button class="modal-close" onclick="cerrarConfirm()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:14px;color:var(--text-2);line-height:1.6">
+                    ¿Estás seguro de eliminar el producto <strong id="confirmNombre"></strong>? Esta acción no se puede
+                    deshacer.
+                </p>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" onclick="cerrarConfirm()">Cancelar</button>
+                <button class="btn-delete-confirm" id="btnConfirmEliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/productos.js"></script>
+</body>
+
+</html>
