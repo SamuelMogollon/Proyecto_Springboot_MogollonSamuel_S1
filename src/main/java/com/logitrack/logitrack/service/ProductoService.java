@@ -11,5 +11,4 @@ public interface ProductoService {
     List<ProductoResponseDTO> listarTodos();
     ProductoResponseDTO buscarPorId(Long id);
     List<ProductoResponseDTO> listarProductosConStockBajo();
-
 }

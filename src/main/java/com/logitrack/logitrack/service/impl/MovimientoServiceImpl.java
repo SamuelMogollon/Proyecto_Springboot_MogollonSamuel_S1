@@ -150,4 +150,25 @@ public class MovimientoServiceImpl implements MovimientoService {
                                 .toList()))
                 .toList();
     }
+
+    @Override
+    public List<MovimientoResponseDTO> listarUltimos() {
+        return movimientoRepository.findTop10ByOrderByFechaDesc()
+                .stream()
+                .map(m -> movimientoMapper.entidadADTO(m,
+                        m.getDetalles().stream()
+                                .map(detalleMovimientoMapper::entidadADTO)
+                                .toList()))
+                .toList();
+    }
+
+    @Override
+    public long countByMovimientoId() {
+        return movimientoRepository.countByMovimientoId();
+    }
+
+    @Override
+    public long countByMovimientoTipoMovimiento() {
+        return movimientoRepository.countByMovimientoTipoMovimiento();
+    }
 }

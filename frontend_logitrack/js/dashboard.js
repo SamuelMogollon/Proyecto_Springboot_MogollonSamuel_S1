@@ -1,4 +1,4 @@
-const API = 'http://localhost:8080';
+const API = 'http://172.16.41.128:8080';
 
 // Verificar que haya token, si no redirigir al login
 if (!localStorage.getItem('token')) {

@@ -29,7 +29,7 @@ async function doLogin() {
 
     try {
         // Petición POST al backend usando la función de api.js
-        const r = await fetch('http://localhost:8080/auth/login', {
+        const r = await fetch('http://172.16.41.128:8080/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password: pass })
@@ -91,6 +91,7 @@ async function doRegister() {
     msg.className = 'msg';
     msg.textContent = '';
 
+    // Validar campos
     if (!nombre || !email || !password) {
         msg.textContent = 'Todos los campos son obligatorios.';
         msg.className = 'msg err show';
@@ -102,7 +103,7 @@ async function doRegister() {
     icon.innerHTML = '<div class="spinner"></div>';
 
     try {
-        const r = await fetch('http://localhost:8080/auth/register', {
+        const r = await fetch('http://172.16.41.128:8080/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombre, email, password, rol })

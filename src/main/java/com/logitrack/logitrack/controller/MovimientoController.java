@@ -84,5 +84,12 @@ public class MovimientoController {
         return ResponseEntity.ok(movimientoServiceImpl.buscarPorRangoDeFechas(inicio, fin));
     }
 
+    @GetMapping("/movimientos/recientes")
+    public ResponseEntity<List<MovimientoResponseDTO>> listarRecientes(){
+        return ResponseEntity.ok(movimientoServiceImpl.listarUltimos());
+    }
+
+
+
 
 }

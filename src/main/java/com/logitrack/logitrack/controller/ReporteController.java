@@ -54,4 +54,9 @@ public class ReporteController {
 
         return ResponseEntity.ok(reporte);
     }
+
+    @GetMapping("/reportes/movimientos")
+    public ResponseEntity<Map<String, Object>> countByMovimientoId() {
+        ResponseEntity<Map<String, Object>> movTotal = countByMovimientoId();
+    }
 }

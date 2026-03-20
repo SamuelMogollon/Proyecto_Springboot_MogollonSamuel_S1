@@ -20,10 +20,11 @@ import org.springframework.context.annotation.Configuration;
                         email = "samuel@logitrack.com"
                 )
         ),
-        servers = @Server(
-                url = "http://localhost:8080",
-                description = "Servidor de desarrollo"
-        )
+        servers = {
+                @Server(url = "http://localhost:8080", description = "Servidor de desarrollo"),
+                @Server(url = "http://172.16.41.19:8080", description = "Servidor en red")
+        }
+
 )
 @SecurityScheme(
         name = "bearerAuth",
